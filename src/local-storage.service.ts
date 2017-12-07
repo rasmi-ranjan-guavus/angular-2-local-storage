@@ -33,20 +33,14 @@ export class LocalStorageService {
     private warnings: Subscriber<string> = new Subscriber<string>();
 
     constructor (
-        @Inject('LOCAL_STORAGE_SERVICE_CONFIG') config: ILocalStorageServiceConfig
+       
     ) {
-        let { notifyOptions, prefix, storageType } = config;
-
-        if (notifyOptions != null) {
-            let { setItem, removeItem } = notifyOptions;
-            this.setNotify(!!setItem, !!removeItem);
-        }
-        if (prefix != null) {
-            this.setPrefix(prefix);
-        }
-        if (storageType != null) {
-            this.setStorageType(storageType);
-        }
+         this.setNotify(true, true);
+      
+            this.setPrefix('gvs');
+       
+            this.setStorageType('localStorage');
+       
 
         this.errors$ = new Observable<string>((observer: Subscriber<string>) => this.errors = observer).share();
         this.removeItems$ = new Observable<ILocalStorageEvent>((observer: Subscriber<ILocalStorageEvent>) => this.removeItems = observer).share();

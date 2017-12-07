@@ -8,9 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 var core_1 = require('@angular/core');
 var Observable_1 = require('rxjs/Observable');
 var Subscriber_1 = require('rxjs/Subscriber');
@@ -18,7 +15,7 @@ require('rxjs/add/operator/share');
 var DEPRECATED = 'This function is deprecated.';
 var LOCAL_STORAGE_NOT_SUPPORTED = 'LOCAL_STORAGE_NOT_SUPPORTED';
 var LocalStorageService = (function () {
-    function LocalStorageService(config) {
+    function LocalStorageService() {
         var _this = this;
         this.isSupported = false;
         this.notifyOptions = {
@@ -31,17 +28,9 @@ var LocalStorageService = (function () {
         this.removeItems = new Subscriber_1.Subscriber();
         this.setItems = new Subscriber_1.Subscriber();
         this.warnings = new Subscriber_1.Subscriber();
-        var notifyOptions = config.notifyOptions, prefix = config.prefix, storageType = config.storageType;
-        if (notifyOptions != null) {
-            var setItem = notifyOptions.setItem, removeItem = notifyOptions.removeItem;
-            this.setNotify(!!setItem, !!removeItem);
-        }
-        if (prefix != null) {
-            this.setPrefix(prefix);
-        }
-        if (storageType != null) {
-            this.setStorageType(storageType);
-        }
+        this.setNotify(true, true);
+        this.setPrefix('gvs');
+        this.setStorageType('localStorage');
         this.errors$ = new Observable_1.Observable(function (observer) { return _this.errors = observer; }).share();
         this.removeItems$ = new Observable_1.Observable(function (observer) { return _this.removeItems = observer; }).share();
         this.setItems$ = new Observable_1.Observable(function (observer) { return _this.setItems = observer; }).share();
@@ -235,9 +224,8 @@ var LocalStorageService = (function () {
         }
     };
     LocalStorageService = __decorate([
-        core_1.Injectable(),
-        __param(0, core_1.Inject('LOCAL_STORAGE_SERVICE_CONFIG')), 
-        __metadata('design:paramtypes', [Object])
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [])
     ], LocalStorageService);
     return LocalStorageService;
 }());
