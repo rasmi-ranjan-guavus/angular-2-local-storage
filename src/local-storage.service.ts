@@ -18,6 +18,7 @@ export class LocalStorageService {
     public removeItems$: Observable<ILocalStorageEvent>;
     public setItems$: Observable<ILocalStorageEvent>;
     public warnings$: Observable<string>;
+    public change$: Observable<string>;
 
     private notifyOptions: INotifyOptions = {
         setItem: false,
@@ -31,23 +32,28 @@ export class LocalStorageService {
     private removeItems: Subscriber<ILocalStorageEvent> = new Subscriber<ILocalStorageEvent>() ;
     private setItems: Subscriber<ILocalStorageEvent> = new Subscriber<ILocalStorageEvent>();
     private warnings: Subscriber<string> = new Subscriber<string>();
+    private change: Subscriber<string> = new Subscriber<string>();
 
-    constructor (
-       
-    ) {
-         this.setNotify(true, true);
-      
-            this.setPrefix('gvs');
-       
-            this.setStorageType('localStorage');
+    constructor () {
+        this.setNotify(true, true);
+    
+        this.setPrefix('gvs');
+    
+        this.setStorageType('localStorage');
        
 
         this.errors$ = new Observable<string>((observer: Subscriber<string>) => this.errors = observer).share();
         this.removeItems$ = new Observable<ILocalStorageEvent>((observer: Subscriber<ILocalStorageEvent>) => this.removeItems = observer).share();
         this.setItems$ = new Observable<ILocalStorageEvent>((observer: Subscriber<ILocalStorageEvent>) => this.setItems = observer).share();
         this.warnings$ = new Observable<string>((observer: Subscriber<string>) => this.warnings = observer).share();
+        this.change$ = new Observable<string>((observer: Subscriber<string>) => this.change = observer).share();
 
         this.isSupported = this.checkSupport();
+        window.addEventListener('storage', this.message_receive);
+    }
+
+    private  message_receive(event) {
+        this.change.next(event.key);
     }
 
     public add (key: string, value: any): boolean {
